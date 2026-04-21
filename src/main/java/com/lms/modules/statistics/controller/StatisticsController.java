@@ -1,5 +1,6 @@
 package com.lms.modules.statistics.controller;
 
+import com.lms.common.dto.StatisticsDTO;
 import com.lms.common.result.Result;
 import com.lms.modules.statistics.service.StatisticsService;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +19,16 @@ public class StatisticsController {
 
     @Autowired
     private StatisticsService statisticsService;
+
+    /**
+     * 获取整体统计数据
+     * GET /api/stats/overview
+     */
+    @GetMapping("/overview")
+    public Result<StatisticsDTO> getOverviewStats() {
+        StatisticsDTO stats = statisticsService.getOverviewStats();
+        return Result.success(stats);
+    }
 
     @GetMapping("/daily")
     public Result<Map<String, Object>> getDailyStats(

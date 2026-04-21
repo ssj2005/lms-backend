@@ -1,8 +1,10 @@
 package com.lms.modules.statistics.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.lms.common.dto.StatisticsDTO;
 import com.lms.modules.book.mapper.BookMapper;
 import com.lms.modules.loan.mapper.LoanRecordMapper;
+import com.lms.modules.user.entity.Reader;
 import com.lms.modules.user.mapper.ReaderMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,48 @@ public class StatisticsService {
 
     @Autowired
     private LoanRecordMapper loanRecordMapper;
+
+    /**
+     * 获取整体统计数据
+     */
+    public StatisticsDTO getOverviewStats() {
+        LocalDate today = LocalDate.now();
+        LocalDateTime startOfDay = LocalDateTime.of(today, LocalTime.MIN);
+        LocalDateTime endOfDay = LocalDateTime.of(today, LocalTime.MAX);
+
+        // 总图书数
+        Long totalBooks = bookMapper.selectCount(null);
+
+        // 总读者数
+        Long totalReaders = readerMapper.selectCount(null);
+
+        // 当前借阅总数（未归还的）
+        Long totalLoans = loanRecordMapper.selectCount(
+                new LambdaQueryWrapper<com.lms.modules.loan.entity.LoanRecord>()
+                        .eq(com.lms.modules.loan.entity.LoanRecord::getStatus, 0)
+        );
+
+        // 逾期数量
+        Long overdueCount = loanRecordMapper.selectCount(
+                new LambdaQueryWrapper<com.lms.modules.loan.entity.LoanRecord>()
+                        .eq(com.lms.modules.loan.entity.LoanRecord::getStatus, 2)
+        );
+
+        // 今日借阅数量
+        Long todayLoans = loanRecordMapper.selectCount(
+                new LambdaQueryWrapper<com.lms.modules.loan.entity.LoanRecord>()
+                        .between(com.lms.modules.loan.entity.LoanRecord::getLoanDate, startOfDay, endOfDay)
+        );
+
+        // 今日归还数量
+        Long todayReturns = loanRecordMapper.selectCount(
+                new LambdaQueryWrapper<com.lms.modules.loan.entity.LoanRecord>()
+                        .between(com.lms.modules.loan.entity.LoanRecord::getReturnDate, startOfDay, endOfDay)
+                        .isNotNull(com.lms.modules.loan.entity.LoanRecord::getReturnDate)
+        );
+
+        return new StatisticsDTO(totalBooks, totalReaders, totalLoans, overdueCount, todayLoans, todayReturns);
+    }
 
     public Map<String, Object> getDailyStats(LocalDate date) {
         LocalDateTime startOfDay = LocalDateTime.of(date, LocalTime.MIN);

@@ -17,8 +17,8 @@ public class BookController {
     @Autowired
     private BookService bookService;
 
-    @GetMapping
-    public Result<Page<Book>> list(
+    @GetMapping("/search")
+    public Result<Page<Book>> search(
             @RequestParam(defaultValue = "1") Integer page,
             @RequestParam(defaultValue = "10") Integer size,
             @RequestParam(required = false) String title,
@@ -26,6 +26,15 @@ public class BookController {
             @RequestParam(required = false) String isbn
     ) {
         Page<Book> result = bookService.pageQuery(page, size, title, author, isbn);
+        return Result.success(result);
+    }
+
+    @GetMapping
+    public Result<Page<Book>> list(
+            @RequestParam(defaultValue = "1") Integer page,
+            @RequestParam(defaultValue = "10") Integer size
+    ) {
+        Page<Book> result = bookService.pageQuery(page, size, null, null, null);
         return Result.success(result);
     }
 
