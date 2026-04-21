@@ -1,0 +1,19 @@
+# 本地开发配置 - 连接到队友数据库
+# 数据库IP: 192.168.150.1
+
+spring:
+  datasource:
+    # 连接到队友的数据库 (192.168.150.1)
+    url: jdbc:mysql://192.168.150.1:3306/lms?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+    username: root
+    password: 123456
+
+    # 或者连接到自己的本地数据库
+    # url: jdbc:mysql://localhost:3306/lms?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai
+
+# 日志配置
+logging:
+  level:
+    com.lms: debug
+    org.springframework.security: info
+    org.springframework.web: info

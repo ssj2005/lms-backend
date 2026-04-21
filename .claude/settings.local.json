@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//mnt/d/grade3term2/LMS/**)",
+      "Bash(mvn clean:*)",
+      "Bash(mvn dependency:purge-local-repository:*)",
+      "Bash(mvn install:*)",
+      "Bash(mvn package:*)",
+      "Bash(java:*)"
+    ]
+  }
+}
