@@ -46,4 +46,51 @@ public class ReaderController {
         readerService.updateById(reader);
         return Result.success();
     }
+
+    @GetMapping("/by-user/{userId}")
+    public Result<Reader> getByUserId(@PathVariable Long userId) {
+        Reader reader = readerService.getByUserId(userId);
+        return Result.success(reader);
+    }
+
+    @GetMapping("/unlinked-users")
+    public Result<java.util.List<com.lms.modules.user.entity.User>> getUnlinkedUsers() {
+        return Result.success(readerService.getUnlinkedUsers());
+    }
+
+    @PostMapping("/{id}/report-loss")
+    public Result<Void> reportLoss(@PathVariable Long id) {
+        readerService.reportLoss(id);
+        return Result.success();
+    }
+
+    @PostMapping("/{id}/approve-loss")
+    public Result<Void> approveLoss(@PathVariable Long id) {
+        readerService.approveLoss(id);
+        return Result.success();
+    }
+
+    @PostMapping("/{id}/reject-loss")
+    public Result<Void> rejectLoss(@PathVariable Long id) {
+        readerService.rejectLoss(id);
+        return Result.success();
+    }
+
+    @PostMapping("/{id}/unsuspend")
+    public Result<Void> unsuspend(@PathVariable Long id) {
+        readerService.unsuspend(id);
+        return Result.success();
+    }
+
+    @PostMapping("/{id}/approve-unsuspend")
+    public Result<Void> approveUnsuspend(@PathVariable Long id) {
+        readerService.approveUnsuspend(id);
+        return Result.success();
+    }
+
+    @PostMapping("/{id}/admin-unsuspend")
+    public Result<Void> adminUnsuspend(@PathVariable Long id) {
+        readerService.adminUnsuspend(id);
+        return Result.success();
+    }
 }

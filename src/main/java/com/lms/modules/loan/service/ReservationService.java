@@ -24,6 +24,9 @@ public class ReservationService {
     @Autowired
     private BookService bookService;
 
+    @Autowired
+    private com.lms.modules.user.service.ReaderService readerService;
+
     private static final Integer RESERVE_DAYS = 3;
 
     public Page<Reservation> pageQuery(Integer page, Integer size, Long readerId, Long bookId) {
@@ -43,6 +46,15 @@ public class ReservationService {
 
     @Transactional
     public void createReservation(Long readerId, Long bookId) {
+        // 检查读者是否存在
+        com.lms.modules.user.entity.Reader reader = readerService.getById(readerId);
+        if (reader == null) {
+            throw new BusinessException("读者不存在");
+        }
+
+        // 检查读者状态
+        readerService.checkReaderStatus(reader);
+
         // 检查图书是否存在
         Book book = bookService.getById(bookId);
         if (book == null) {

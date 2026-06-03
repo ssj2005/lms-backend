@@ -29,6 +29,8 @@ public class BookService {
             wrapper.eq(Book::getIsbn, isbn);
         }
 
+        wrapper.orderByDesc(Book::getCreateTime);
+
         return bookMapper.selectPage(pageParam, wrapper);
     }
 

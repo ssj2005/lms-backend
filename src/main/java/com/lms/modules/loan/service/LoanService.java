@@ -59,6 +59,9 @@ public class LoanService {
             throw new BusinessException("读者不存在");
         }
 
+        // 检查读者状态
+        readerService.checkReaderStatus(reader);
+
         // 检借阅数量
         if (reader.getCurrentBorrow() >= reader.getBorrowLimit()) {
             throw new BusinessException("已达到借阅上限");
