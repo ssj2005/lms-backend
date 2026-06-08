@@ -40,7 +40,7 @@ public class ReservationService {
             wrapper.eq(Reservation::getBookId, bookId);
         }
 
-        wrapper.orderByDesc(Reservation::getReserveDate);
+        wrapper.orderByDesc(Reservation::getCreateTime);
         return reservationMapper.selectPage(pageParam, wrapper);
     }
 
