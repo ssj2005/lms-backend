@@ -47,7 +47,7 @@ public class LoanService {
             wrapper.eq(LoanRecord::getStatus, status);
         }
 
-        wrapper.orderByDesc(LoanRecord::getLoanDate);
+        wrapper.orderByDesc(LoanRecord::getCreateTime);
         return loanRecordMapper.selectPage(pageParam, wrapper);
     }
 
@@ -183,7 +183,7 @@ public class LoanService {
         Page<LoanRecord> pageParam = new Page<>(page, size);
         LambdaQueryWrapper<LoanRecord> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(LoanRecord::getStatus, 2); // 逾期
-        wrapper.orderByDesc(LoanRecord::getDueDate);
+        wrapper.orderByDesc(LoanRecord::getCreateTime);
         return loanRecordMapper.selectPage(pageParam, wrapper);
     }
 }
